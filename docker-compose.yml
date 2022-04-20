@@ -1,0 +1,13 @@
+services:
+    # Mongo Database
+    mongodb:
+        image: mongo
+
+    # Development service
+    develop:
+        build:
+            context: ./docker/develop
+        volumes:
+            - ./:/srv/sites/web:cached
+        depends_on:
+            - mongodb
