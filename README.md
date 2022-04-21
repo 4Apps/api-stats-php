@@ -37,4 +37,13 @@ $apiStats->updateApiStatistics($eventId, timestamp: time());
 
 ## Development
 
-_In progress_
+To make changes to the library do this:
+
+1. `python3 -m pip install -r requirements.txt`
+2. `fab docker.install`
+3. `docker compose exec develop bash`
+4. Repository contains configuration files for vscode container extension.
+
+## Testing
+
+To run phpunit tests, bring up development docker machine and run phpunit: `./vendor/bin/phpunit`

@@ -33,6 +33,8 @@ class ApiStats
 
         $this->statisticsClient = new MongoClient($mongoDbConfig['string']);
         $this->statisticsDb = $this->statisticsClient->{$mongoDbConfig['dbname']};
+        $this->apiEventLog = $this->statisticsDb->api_event_log;
+        $this->apiTimeLog = $this->statisticsDb->api_time_log;
     }
 
     /**
@@ -65,13 +67,13 @@ class ApiStats
             'start_time' => $now,
             'day_time' => $startOfDay,
         ]);
-        $eventRecord = $this->statisticsDb->api_event_log->insertOne($eventData);
+        $eventRecord = $this->apiEventLog->insertOne($eventData);
         $eventRecordId = $eventRecord->getInsertedId();
         $eventRecordIdStr = (string)$eventRecordId;
         $this->timers[$eventRecordIdStr] = microtime(true);
 
         // Seconds
-        $this->statisticsDb->api_time_log->updateOne(
+        $this->apiTimeLog->updateOne(
             [
                 'start_time' => $now,
                 'api_name' => $apiName,
@@ -91,7 +93,7 @@ class ApiStats
 
         // Minutes
         $startOfMinute = floor($now / 60) * 60;
-        $this->statisticsDb->api_time_log->updateOne(
+        $this->apiTimeLog->updateOne(
             [
                 'start_time' => $startOfMinute,
                 'api_name' => $apiName,
@@ -110,7 +112,7 @@ class ApiStats
         );
 
         $startOfHour = floor($now / 3600) * 3600;
-        $this->statisticsDb->api_time_log->updateOne(
+        $this->apiTimeLog->updateOne(
             [
                 'start_time' => $startOfHour,
                 'api_name' => $apiName,
@@ -129,7 +131,7 @@ class ApiStats
         );
 
         // Day
-        $this->statisticsDb->api_time_log->updateOne(
+        $this->apiTimeLog->updateOne(
             [
                 'start_time' => $startOfDay,
                 'api_name' => $apiName,
@@ -172,7 +174,7 @@ class ApiStats
         }
 
         if ($failed === true) {
-            $this->statisticsDb->api_event_log->updateOne(
+            $this->apiEventLog->updateOne(
                 ['_id' => $eventId],
                 [
                     '$set' => [
@@ -182,7 +184,7 @@ class ApiStats
                 ]
             );
         } elseif ($retry === true) {
-            $this->statisticsDb->api_event_log->updateOne(
+            $this->apiEventLog->updateOne(
                 ['_id' => $eventId],
                 [
                     '$inc' => [
@@ -194,7 +196,7 @@ class ApiStats
         } else {
             $eventIdStr = (string)$eventId;
             $diff = round(microtime(true) - $this->timers[$eventIdStr], 5);
-            $this->statisticsDb->api_event_log->updateOne(
+            $this->apiEventLog->updateOne(
                 ['_id' => $eventId],
                 [
                     '$set' => [
