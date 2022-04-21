@@ -1,15 +1,13 @@
-# PHP library for [Api Usage Portal](https://github.com/4Apps/api-usage-portal)
-
-Portal to show off api usage stats. See also statistics collection libraries for various languages: [Libraries](###statistics-collection-libraries)
+# PHP library for [Api Stats Portal](https://github.com/4Apps/api-stats-portal)
 
 ## Installation / Usage
 
-Installation via composer: `composer require 4apps/api-usage-php`
+Installation via composer: `composer require 4apps/api-stats-php`
 
 Usage example (for php 8.1+):
 
 ```php
-use 4Apps\ApiUsage;
+use 4Apps\ApiStats;
 
 $mongoDbConfig = [
     'string' => 'mongodb://mongodb:27017',

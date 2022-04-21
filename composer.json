@@ -1,6 +1,6 @@
 {
-    "name": "4apps/api-usage-php",
-    "description": "PHP library for Api usage portal",
+    "name": "4apps/api-stats-php",
+    "description": "PHP library for Api stats portal",
     "license": "MIT",
     "type": "project",
     "authors": [
