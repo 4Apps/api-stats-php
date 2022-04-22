@@ -5,7 +5,7 @@ namespace FourApps;
 use Exception;
 use MongoDB\Client as MongoClient;
 use MongoDB\Database as MongoDatabase;
-use MongoDB\BSON\ObjectID;
+use MongoDB\BSON\ObjectId;
 use FourApps\Defaults;
 
 class ApiStats
@@ -46,7 +46,7 @@ class ApiStats
      * @param string $methodName Method name that is called
      * @param string $endpointUrl Endpoint URL
      *
-     * @return ObjectID
+     * @return ObjectId
      */
     public function logApiStatistics(
         string $apiName,
@@ -54,7 +54,7 @@ class ApiStats
         string $contextName,
         string $methodName,
         string $endpointUrl
-    ): ObjectID {
+    ): ObjectId {
         $now = time();
         $startOfDay = strtotime('today', $now);
 
@@ -156,14 +156,14 @@ class ApiStats
     /**
      * Update API call event statistics.
      *
-     * @param ObjectID $eventId Event record ID returned by logApiStatistics()
+     * @param ObjectId $eventId Event record ID returned by logApiStatistics()
      * @param ?int $timestamp Unix Timestamp
      * @param bool $failed Whether the call failed
      * @param bool $retry Whether the call is retrying
      * @param int $retrySeconds Number of seconds to wait before retrying
      */
     public function updateApiStatistics(
-        ObjectID $eventId,
+        ObjectId $eventId,
         ?int $timestamp = null,
         bool $failed = false,
         bool $retry = false,
